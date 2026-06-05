@@ -319,7 +319,7 @@ draws_rvars(a = as_draws_rvars(draws_1)$a,
   mcmc_scatter(alpha = 0.5) +
   labs(y = "sum(a_item)")
 
-#' ## Hierarchical logistic regression with zero sum-to-zero parameterization
+#' ## Hierarchical logistic regression with sum-to-zero parameterization
 #'
 #' We can remove the identifiability problem by constraining
 #' `a_respondent` and `a_item` to have sum zero. This can be easily
@@ -419,7 +419,7 @@ draws_2 |>
 #' the problem. With the explicit latent parameterization `z_item`,
 #' the issue was easier to detect.
 #' 
-#' ## Hierarchical logistic regression with zero sum-to-zero parameterization
+#' ## Hierarchical logistic regression with sum-to-zero parameterization
 #'
 #' We switch to using the centered parameterization for both
 #' `a_respondent` and `a_item`.  We could still use non-centered for
