@@ -34,10 +34,11 @@ root <- has_file(".Bayesian-Workflow-root")$make_fix_file()
 library(rstanarm)
 library(loo)
 library(bayesplot)
-theme_set(bayesplot::theme_default(base_family = "sans", base_size = 14))
+# theme_set(bayesplot::theme_default(base_family = "sans", base_size = 14))
 library(khroma)
 library(latex2exp)
 library(patchwork)
+library(ggplot2)
 
 wells <- read.csv(root("misc/chapter_08/section_08_04","wells.csv"))
 

@@ -36,7 +36,7 @@ library(patchwork)
 #' 
 #' Use the Kilpisjärvi summer month temperatures 1952--2022 data
 #' recorded by Finnish Meteorological Institute (CC BY 4.0).
-data_kilpis <- read.delim(root("digits/data", "kilpisjarvi-summer-temp-2022.csv"), sep = ";")
+data_kilpis <- read.delim(root("digits/data", "kilpisjarvi-summer-temp.csv"), sep = ";")
 data_lin <-list(N = nrow(data_kilpis),
              x = data_kilpis$year,
              xpred = 2023,

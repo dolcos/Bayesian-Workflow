@@ -34,8 +34,8 @@ root <- has_file(".Bayesian-Workflow-root")$make_fix_file()
 library(loo)
 library(brms)
 options(brms.backend = "cmdstanr", mc.cores = 1)
-devtools::load_all("~/proj/bayesplot")
-## library(bayesplot)
+# devtools::load_all("~/proj/bayesplot")
+library(bayesplot)
 ggplot2::theme_set(bayesplot::theme_default(base_family = "sans", base_size=14))
 SEED <- 48927 # set random seed for reproducibility
 
@@ -43,7 +43,7 @@ SEED <- 48927 # set random seed for reproducibility
 #' 
 #' Use the Kilpisjärvi summer month temperatures 1952--2022 data
 #' recorded by Finnish Meteorological Institute.
-data_kilpis <- read.delim(root("digits/data", "kilpisjarvi-summer-temp-2022.csv"), sep = ";")
+data_kilpis <- read.delim(root("digits/data", "kilpisjarvi-summer-temp.csv"), sep = ";")
 data_lin <- data.frame(year = data_kilpis$year,
                        temp = data_kilpis$temp.summer)
 

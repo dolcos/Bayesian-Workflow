@@ -1,0 +1,17 @@
+{
+  "hash": "1ace594c4f1d5b35246ca98aae443c92",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Logistic regression prior predictive checking demo for Bayesian Workflow book\"\nauthor: \"Aki Vehtari\"\ndate: 2024-06-27\ndate-modified: today\ndate-format: iso\nformat:\n  html:\n    number-sections: true\n    code-copy: true\n    code-download: true\n    code-tools: true\nbibliography: ../../../casestudies.bib\n---\n\nThis notebook includes part of the code for the Bayesian Workflow\nbook Section 5.9 about prior predictive checking. \n\n\n\n**Load packages**\n\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(ggplot2)\nlibrary(patchwork)\n```\n:::\n\n\n# Logistic regression with normal(0, 1) prior and binary predictor\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\nprior_draws <- \\(k, S, sd=1) plogis(replicate(\n  n=S,\n  rnorm(n=1, sd=sd) + t(rnorm(n=k, sd=sd)) %*% rbinom(n=k, size=1, prob=0.5))\n  )\nS <- 1000*100\nprior_draws_1 <- prior_draws(k=2, S=S)\nprior_draws_2 <- prior_draws(k=4, S=S)\nprior_draws_3 <- prior_draws(k=15, S=S)\ndata.frame(p = c(prior_draws_1, prior_draws_2, prior_draws_3),\n           k = rep(c(2, 4, 15), each = S)) |>\n  ggplot(aes(x = p)) +\n  geom_histogram(color = \"gray60\", fill = \"gray60\", bins = 100) +\n  facet_grid(\n    cols = vars(k),\n    labeller = labeller(\n      k = ~ paste(.x, \"predictors\")\n    )\n  ) +\n  labs(x=\"Prior predictive probability\", y = \"\") +\n  theme(\n    axis.title.y = element_blank(),\n    axis.text.y  = element_blank(),\n    axis.ticks.y = element_blank(),\n    axis.line.y   = element_blank()\n  )\n```\n\n::: {.cell-output-display}\n![](logistic_priorcheck_files/figure-html/unnamed-chunk-2-1.png){width=90%}\n:::\n\n```{.r .cell-code}\n#ggsave(root(\"prior_predictive_logistic_new.pdf\"), width=8, height=2)\n```\n:::\n\n",
+    "supporting": [
+      "logistic_priorcheck_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

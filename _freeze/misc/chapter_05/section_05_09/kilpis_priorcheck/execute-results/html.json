@@ -1,0 +1,17 @@
+{
+  "hash": "abcfec6c8d8c0398abc0122086999dd9",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Kilpisjärvi prior predictive checking demo for Bayesian Workflow book\"\nauthor: \"Aki Vehtari\"\ndate: 2024-06-27\ndate-modified: today\ndate-format: iso\nformat:\n  html:\n    number-sections: true\n    code-copy: true\n    code-download: true\n    code-tools: true\nbibliography: ../../../casestudies.bib\n---\n\nThis notebook includes part of the code for the Bayesian Workflow\nbook Section 5.9 about prior predictive checking.\n\n\n\n**Load packages**\n\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(rprojroot)\nroot <- has_file(\".Bayesian-Workflow-root\")$make_fix_file()\nlibrary(ggplot2)\nlibrary(patchwork)\n```\n:::\n\n\n# Linear Gaussian model\n\nUse the Kilpisjärvi summer month temperatures 1952--2022 data\nrecorded by Finnish Meteorological Institute (CC BY 4.0).\n\n\n::: {.cell}\n\n```{.r .cell-code}\ndata_kilpis <- read.delim(root(\"digits/data\", \"kilpisjarvi-summer-temp.csv\"), sep = \";\")\ndata_lin <-list(N = nrow(data_kilpis),\n             x = data_kilpis$year,\n             xpred = 2023,\n             y = data_kilpis[,5])\n\n\ndata_lin_priors <- c(list(\n    pmualpha_c = 0,     # prior mean for average temperature\n    psalpha = 100,        # weakly informative\n    pmubeta = 0,         # a priori incr. and decr. as likely\n    psbeta = 100,   # avg temp prob does does not incr. more than a degree per 10 years:  setting this to +/-3 sd's\n    pssigma = 1),        # setting sd of total variation in summer average temperatures to 1 degree implies that +/- 3 sd's is +/-3 degrees: \n  data_lin)\n\n\nns=1000\nxc=data_kilpis$year-mean(data_kilpis$year)\nn=length(xc)\nmupp=rnorm(ns, mean=0, sd=100) + matrix(rnorm(ns*n, mean=0, sd=100),nrow=ns)%*%xc\n\ntheme_set(bayesplot::theme_default(base_family = \"sans\", base_size=15))\n\np1<-ggplot() +\n    geom_abline(\n        intercept = rnorm(100, mean=0, sd=100),\n        slope = rnorm(100, mean=0, sd=100),\n        linewidth = 0.1,\n        color = \"black\",\n        alpha = 0.2\n    ) +\n  scale_x_continuous(limits=c(-31,31),breaks=c(-22.5,-12.5,-2.5,7.5,17.7,27.5),labels=c(1960,1970,1980,1990,2000,2010))+\n  ylim(y=c(-10000,10000))\n## +\n##   ggtitle(\"Models drawn from a wide prior\")\n\np2<-ggplot() +\n    geom_abline(\n        intercept = rnorm(100, mean=0, sd=10)+10,\n        slope = rnorm(100, mean=0, sd=.1/3),\n        linewidth = 0.1,\n        color = \"black\",\n        alpha = 0.2\n    ) +\n  scale_x_continuous(limits=c(-31,31),breaks=c(-22.5,-12.5,-2.5,7.5,17.7,27.5),labels=c(1960,1970,1980,1990,2000,2010))+\n  ylim(y=c(-20,40)) ## +\n  ## ggtitle(\"Models drawn from an informative prior\")\n```\n:::\n\n\n::: {.cell width='9' height='3'}\n\n```{.r .cell-code}\np1+p2\n\n#ggsave(root(\"kilpisjarvi_priorcheck.pdf\", width=9, height=3)\n```\n\n::: {.cell-output-display}\n![](kilpis_priorcheck_files/figure-html/fig-kilpisjarvi_priorcheck-1.png){#fig-kilpisjarvi_priorcheck width=90%}\n:::\n:::\n\n",
+    "supporting": [
+      "kilpis_priorcheck_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

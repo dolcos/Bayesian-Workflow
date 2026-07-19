@@ -1,0 +1,17 @@
+{
+  "hash": "b7e95b6df3693458fd6a4790aa58d827",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Simple simulation based calibration checking demo\"\nauthor: \"Martin Modrák\"\ndate: 2020-10-07\ndate-modified: today\ndate-format: iso\nformat:\n  html:\n    number-sections: true\n    code-copy: true\n    code-download: true\n    code-tools: true\nbibliography: ../../../casestudies.bib\n---\n\nThis notebook includes code for the Bayesian Workflow book figures\nin Chapter 14 *Simulation-based calibration checking*.\n\n\n\n\n**Load packages**\n\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(dplyr)\nlibrary(SBC)\nlibrary(ggplot2)\nlibrary(bayesplot)\ntheme_set(bayesplot::theme_default(base_family = \"sans\"))\n```\n:::\n\n\nFigure 14.1\n\n\n::: {.cell}\n\n```{.r .cell-code}\nset.seed(65123365)\nN <- 4000\ntrue_val <- 1.58\ndf_sbc1 <- data.frame(\n  sc = rep(paste0(\"scenario \", 1:3), each = N),\n  mu = c(\n    rnorm(N, true_val, 1.3),\n    rnorm(N, 0, 1),\n    if_else(runif(N) < 0.5, rnorm(N, true_val, 1.3), rnorm(N, 6, 0.75))\n  )\n)\nggplot(data = df_sbc1, aes(x = mu)) +\n  geom_histogram(binwidth = 0.5) +\n  geom_vline(xintercept = true_val, linewidth = 2, linetype = \"dashed\", color = \"lightblue\") +\n  facet_wrap(~sc) +\n  scale_x_continuous(\"mu\", breaks = c(-3,0,3,6,9)) \n#ggsave(\"sbc_point_estimate.pdf\")\n```\n\n::: {.cell-output-display}\n![](sbc_workflow_files/figure-html/fig-sbc_point_estimate-1.png){#fig-sbc_point_estimate width=95%}\n:::\n:::\n\n\nFigure 14.3\n\n\n::: {.cell}\n\n```{.r .cell-code}\nres_1000 <- SBC_example_results(\"visualizations\", n_sims = 1000)\nplot_rank_hist(res_1000) +\n  scale_x_continuous(\"rank\")\n#ggsave(filename = \"sbc_rank_hist_1000.pdf\", width = 7.32, height = 4.51)\n```\n\n::: {.cell-output-display}\n![](sbc_workflow_files/figure-html/fig-sbc_rank_hist_1000-1.png){#fig-sbc_rank_hist_1000 width=95%}\n:::\n:::\n\n\nFigure 14.4\n\n\n::: {.cell}\n\n```{.r .cell-code}\nplot_ecdf_diff(res_1000) +\n  theme(legend.position = \"bottom\")\n#ggsave(filename = \"sbc_ecdf_diff_1000.pdf\", width = 7.32, height = 4.51)\n```\n\n::: {.cell-output-display}\n![](sbc_workflow_files/figure-html/fig-sbc_ecdf_diff_1000-1.png){#fig-sbc_ecdf_diff_1000 width=95%}\n:::\n:::\n\n",
+    "supporting": [
+      "sbc_workflow_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

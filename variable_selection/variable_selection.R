@@ -91,8 +91,8 @@ if (interactive()) {
   handlers(global = TRUE)
 }
 library(ggplot2)
-## library(bayesplot)
-devtools::load_all("~/proj/bayesplot")
+library(bayesplot)
+# devtools::load_all("~/proj/bayesplot")
 theme_set(bayesplot::theme_default(base_family = "sans", base_size = 16))
 library(RColorBrewer)
 set1 <- brewer.pal(7, "Set1")
